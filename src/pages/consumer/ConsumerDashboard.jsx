@@ -12,7 +12,6 @@ function ConsumerDashboard() {
       setResult(null);
       return;
     }
-
     const mockBatch = {
       batchId: batchId,
       cropType: "Tomato",
@@ -27,7 +26,6 @@ function ConsumerDashboard() {
         { step: "At Retailer", location: "Pending", date: "—", icon: "store", done: false },
       ],
     };
-
     setError("");
     setResult(mockBatch);
   };
@@ -47,7 +45,6 @@ function ConsumerDashboard() {
       padding: "40px 20px",
       color: "#fff"
     }}>
-      {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "40px" }}>
         <h1 style={{ fontSize: "32px", color: "#7ec850", margin: 0 }}>🔍 Trace Your Produce</h1>
         <p style={{ color: "#a0b890", marginTop: "8px" }}>
@@ -55,13 +52,7 @@ function ConsumerDashboard() {
         </p>
       </div>
 
-      {/* Search Box */}
-      <div style={{
-        maxWidth: "500px",
-        margin: "0 auto 40px",
-        display: "flex",
-        gap: "10px"
-      }}>
+      <div style={{ maxWidth: "500px", margin: "0 auto 40px", display: "flex", gap: "10px" }}>
         <div style={{
           flex: 1,
           display: "flex",
@@ -104,15 +95,74 @@ function ConsumerDashboard() {
         </button>
       </div>
 
-      {error && (
-        <p style={{ color: "#ff6b6b", textAlign: "center" }}>{error}</p>
-      )}
+      {error && <p style={{ color: "#ff6b6b", textAlign: "center" }}>{error}</p>}
 
-      {/* Results */}
       {result && (
         <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-
-          {/* Batch Info Card */}
           <div style={{
             background: "rgba(255,255,255,0.06)",
             borderRadius: "16px",
+            padding: "24px",
+            marginBottom: "30px",
+            border: "1px solid rgba(126,200,80,0.2)"
+          }}>
+            <h2 style={{ color: "#7ec850", marginTop: 0 }}>Batch Details</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+              {[
+                { label: "Batch ID", value: result.batchId },
+                { label: "Crop Type", value: result.cropType },
+                { label: "Quantity", value: result.quantity },
+                { label: "Farmer", value: result.farmer },
+                { label: "Status", value: result.status },
+                { label: "Timestamp", value: result.timestamp },
+              ].map((item, i) => (
+                <div key={i}>
+                  <p style={{ color: "#a0b890", fontSize: "12px", margin: "0 0 2px" }}>{item.label}</p>
+                  <p style={{ color: "#fff", fontWeight: "bold", margin: 0 }}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <h2 style={{ color: "#7ec850", marginBottom: "20px" }}>Product Journey</h2>
+          <div>
+            {result.journey.map((step, index) => (
+              <div key={index} style={{ display: "flex", alignItems: "flex-start", marginBottom: "24px", gap: "16px" }}>
+                <div style={{
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: step.done ? "linear-gradient(135deg, #5a9e2f, #7ec850)" : "rgba(255,255,255,0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "18px",
+                  flexShrink: 0,
+                  border: step.done ? "none" : "1px solid rgba(255,255,255,0.2)"
+                }}>
+                  {iconMap[step.icon]}
+                </div>
+                <div style={{
+                  background: "rgba(255,255,255,0.05)",
+                  borderRadius: "12px",
+                  padding: "14px 18px",
+                  flex: 1,
+                  border: step.done ? "1px solid rgba(126,200,80,0.3)" : "1px solid rgba(255,255,255,0.08)"
+                }}>
+                  <p style={{ margin: "0 0 4px", fontWeight: "bold", color: step.done ? "#7ec850" : "#888" }}>
+                    {step.step}
+                  </p>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#a0b890" }}>
+                    📍 {step.location} &nbsp;|&nbsp; 📅 {step.date}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ConsumerDashboard;
